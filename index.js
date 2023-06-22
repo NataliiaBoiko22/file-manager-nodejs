@@ -10,10 +10,13 @@ import {
 } from "./src/utils/messages.js";
 import up from "./src/up.js";
 import cd from "./src/cd.js";
-import ls from "./src/ls.js";
+import ls from "./src/list.js";
 import cat from "./src/cat.js";
 import add from "./src/add.js";
-import rn from "./src/rn.js";
+import rn from "./src/rename.js";
+import cp from "./src/copy.js";
+import rm from "./src/remove.js";
+import mv from "./src/move.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const fileManager = async () => {
@@ -50,14 +53,15 @@ const fileManager = async () => {
   });
 
   rl.on("line", async (line) => {
+    let source = line.split(" ")[1];
+    let destination = line.split(" ")[2];
+
     switch (true) {
       case line === "up":
         currdir = up(homedir, currdir);
         rl.setPrompt(`You are currently in ${currdir}\n`);
-
         rl.prompt();
         console.log(currdir);
-
         break;
       case line.includes("cd "):
         let newPath = line.split(" ")[1];
@@ -70,21 +74,28 @@ const fileManager = async () => {
         await ls(currdir);
         rl.prompt();
         break;
-
       case line.includes("cat "):
-        let fileName = line.split(" ")[1];
-        await cat(currdir, fileName);
+        await cat(currdir, source);
         rl.prompt();
         break;
       case line.includes("add "):
-        let newFileName = line.split(" ")[1];
-        await add(currdir, newFileName);
+        await add(currdir, source);
         rl.prompt();
         break;
       case line.includes("rn "):
-        let curFileName = line.split(" ")[1];
-        let updateFileName = line.split(" ")[2];
-        await rn(curFileName, currdir, updateFileName);
+        await rn(source, currdir, destination);
+        rl.prompt();
+        break;
+      case line.includes("cp "):
+        await cp(source, destination, currdir);
+        rl.prompt();
+        break;
+      case line.includes("rm "):
+        await rm(source, currdir);
+        rl.prompt();
+        break;
+      case line.includes("mv "):
+        await mv(source, destination, currdir);
         rl.prompt();
         break;
     }
