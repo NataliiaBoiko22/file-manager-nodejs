@@ -12,6 +12,8 @@ import up from "./src/up.js";
 import cd from "./src/cd.js";
 import ls from "./src/ls.js";
 import cat from "./src/cat.js";
+import add from "./src/add.js";
+import rn from "./src/rn.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const fileManager = async () => {
@@ -72,6 +74,17 @@ const fileManager = async () => {
       case line.includes("cat "):
         let fileName = line.split(" ")[1];
         await cat(currdir, fileName);
+        rl.prompt();
+        break;
+      case line.includes("add "):
+        let newFileName = line.split(" ")[1];
+        await add(currdir, newFileName);
+        rl.prompt();
+        break;
+      case line.includes("rn "):
+        let curFileName = line.split(" ")[1];
+        let updateFileName = line.split(" ")[2];
+        await rn(curFileName, currdir, updateFileName);
         rl.prompt();
         break;
     }
