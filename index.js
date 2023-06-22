@@ -11,6 +11,7 @@ import {
 import up from "./src/up.js";
 import cd from "./src/cd.js";
 import ls from "./src/ls.js";
+import cat from "./src/cat.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const fileManager = async () => {
@@ -65,6 +66,12 @@ const fileManager = async () => {
         break;
       case line === "ls":
         await ls(currdir);
+        rl.prompt();
+        break;
+
+      case line.includes("cat "):
+        let fileName = line.split(" ")[1];
+        await cat(currdir, fileName);
         rl.prompt();
         break;
     }

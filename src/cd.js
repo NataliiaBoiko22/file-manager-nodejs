@@ -1,9 +1,9 @@
 import path from "path";
 import fs from "fs";
-const getAbsPath = (newPathTo, currentdir) => {
+export const getAbsPath = (newPathTo, currentdir) => {
   let absolutePath;
   if (!path.isAbsolute(newPathTo)) {
-    if (pathToFile.includes("./") || newPathTo.includes("../")) {
+    if (newPathTo.includes("./") || newPathTo.includes("../")) {
       absolutePath = path.resolve(currentdir, newPathTo);
     } else {
       absolutePath = path.join(currentdir, newPathTo);
