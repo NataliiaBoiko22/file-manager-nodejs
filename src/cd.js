@@ -15,6 +15,7 @@ export const getAbsPath = (newPathTo, currentdir) => {
   return absolutePath;
 };
 const cd = async (newPath, currdir) => {
+  // process.chdir(currdir);
   let absolutePath = getAbsPath(newPath, currdir);
 
   absolutePath = await fs.promises

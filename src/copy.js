@@ -13,6 +13,7 @@ const cp = async (pathToSourceFile, pathToNewDir, currdir) => {
       pathToNewDir,
       nameOfSourceFile
     );
+    console.log(absPathToDestinationFile);
     const readStream = fs.createReadStream(absPathToSourceFile);
     const writableStream = fs.createWriteStream(absPathToDestinationFile);
 

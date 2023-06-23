@@ -17,13 +17,16 @@ import rn from "./src/rename.js";
 import cp from "./src/copy.js";
 import rm from "./src/remove.js";
 import mv from "./src/move.js";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import oS from "./src/os.js";
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
 const fileManager = async () => {
   const homedir = os.homedir();
   let currdir = process.cwd();
-  console.log(homedir);
-  console.log(currdir);
+  // process.chdir(homedir);
+  // console.log(homedir);
+  // console.log(currdir);
 
   const userName = process.argv
     .slice(2)
@@ -96,6 +99,10 @@ const fileManager = async () => {
         break;
       case line.includes("mv "):
         await mv(source, destination, currdir);
+        rl.prompt();
+        break;
+      case line.includes("os --"):
+        await oS(line.split(" ")[1]);
         rl.prompt();
         break;
     }
