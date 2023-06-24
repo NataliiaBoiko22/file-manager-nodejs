@@ -18,6 +18,8 @@ import cp from "./src/copy.js";
 import rm from "./src/remove.js";
 import mv from "./src/move.js";
 import oS from "./src/os.js";
+import hash from "./src/hash.js";
+
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
@@ -102,7 +104,11 @@ const fileManager = async () => {
         rl.prompt();
         break;
       case line.includes("os --"):
-        await oS(line.split(" ")[1]);
+        await oS(source);
+        rl.prompt();
+        break;
+      case line.includes("hash "):
+        await hash(source);
         rl.prompt();
         break;
     }
