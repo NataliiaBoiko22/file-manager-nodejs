@@ -1,15 +1,15 @@
 import path from "path";
 
-const getAbsolutePath = (newPathTo, currentdir) => {
+const getAbsolutePath = (pathToFile, currdir) => {
   let absolutePath;
-  if (!path.isAbsolute(newPathTo)) {
-    if (newPathTo.includes("./") || newPathTo.includes("../")) {
-      absolutePath = path.resolve(currentdir, newPathTo);
+  if (!path.isAbsolute(pathToFile)) {
+    if (pathToFile.includes("./") || pathToFile.includes("../")) {
+      absolutePath = path.resolve(currdir, pathToFile);
     } else {
-      absolutePath = path.join(currentdir, newPathTo);
+      absolutePath = path.join(currdir, pathToFile);
     }
   } else {
-    absolutePath = newPathTo;
+    absolutePath = pathToFile;
   }
 
   return absolutePath;
