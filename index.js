@@ -1,6 +1,7 @@
 import os from "os";
 import readline from "readline";
-import path from "path";
+import { EOL } from "os";
+
 import { fileURLToPath } from "url";
 import { stdin, stdout, exit } from "process";
 import {
@@ -36,7 +37,7 @@ const fileManager = async () => {
     .filter((s) => s.includes("--username"))[0]
     .split("=")[1];
 
-  console.log(getWelcomeMess(userName));
+  getWelcomeMess(userName);
 
   const rl = readline.createInterface({
     input: stdin,
@@ -45,7 +46,7 @@ const fileManager = async () => {
   });
   rl.prompt();
   const stopFileManager = () => {
-    console.log(getGoodbyeMess(userName));
+    getGoodbyeMess(userName);
     exit();
   };
 
@@ -66,60 +67,57 @@ const fileManager = async () => {
     switch (true) {
       case line === "up":
         currdir = up(homedir, currdir);
-        rl.setPrompt(`You are currently in ${currdir}\n`);
+        rl.setPrompt(`You are currently in ${currdir}${EOL}`);
         rl.prompt();
-        console.log(currdir);
         break;
       case command === "cd":
-        let newPath = line.split(" ")[1];
-        currdir = await cd(newPath, currdir);
-        rl.setPrompt(`You are currently in ${currdir}\n`);
+        currdir = await cd(source, currdir);
+        rl.setPrompt(`You are currently in ${currdir}${EOL}`);
         rl.prompt();
-        console.log(currdir);
         break;
       case line === "ls":
         await ls(currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
       case command === "cat":
-        await cat(currdir, source);
-        rl.prompt();
+        await cat(source, currdir);
+        // rl.prompt();
         break;
       case command === "add":
-        await add(currdir, source);
-        rl.prompt();
+        await add(source, currdir);
+        // rl.prompt();
         break;
       case command === "rn":
-        await rn(source, currdir, destination);
-        rl.prompt();
+        await rn(source, destination, currdir);
+        // rl.prompt();
         break;
       case command === "cp":
         await cp(source, destination, currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
       case command === "rm":
         await rm(source, currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
       case command === "mv":
         await mv(source, destination, currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
-      case command === "os --":
+      case line.includes("os --"):
         await oS(source);
-        rl.prompt();
+        // rl.prompt();
         break;
-      case command === "hash ":
-        await hash(source);
-        rl.prompt();
+      case command === "hash":
+        await hash(source, currdir);
+        // rl.prompt();
         break;
       case command === "compress":
         await compress(source, destination, currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
       case command === "decompress":
         await decompress(source, destination, currdir);
-        rl.prompt();
+        // rl.prompt();
         break;
     }
   });

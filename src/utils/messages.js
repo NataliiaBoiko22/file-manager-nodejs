@@ -1,13 +1,20 @@
 import { EOL } from "os";
-const { stdout } = process;
 
 export function getCurrentPathMess() {
-  stdout.write(`\nYou are currently in ${process.cwd()}\n`);
+  console.log(`You are currently in ${process.cwd()}${EOL}`);
 }
-export const getWelcomeMess = (userName) =>
-  `Welcome to the File Manager, ${userName}!`;
-export const getGoodbyeMess = (userName) =>
-  `${EOL}Thank you for using File Manager, ${userName}, goodbye!`;
+export function getWelcomeMess(userName) {
+  console.log(`Welcome to the File Manager, ${userName}!${EOL}`);
+}
+export function getGoodbyeMess(userName) {
+  console.log(
+    `${EOL}Thank you for using File Manager, ${userName}, goodbye!${EOL}`
+  );
+}
 
-export const failedOperationMess = "Operation failed";
-export const invalidInputMess = "Invalid input";
+export function failedOperationMess() {
+  console.log(`${EOL}Operation failed${EOL}`);
+}
+export function invalidInputMess() {
+  console.log(`${EOL}Invalid input${EOL}`);
+}

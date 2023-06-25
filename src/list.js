@@ -1,6 +1,5 @@
-
 import { readdir } from "fs/promises";
-
+import { getCurrentPathMess } from "./utils/messages.js";
 async function ls(path) {
   const list = [];
 
@@ -16,6 +15,7 @@ async function ls(path) {
   });
 
   console.table(list, ["index", "name", "type"]);
+  getCurrentPathMess();
   return list;
 }
 

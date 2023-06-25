@@ -1,17 +1,26 @@
 import fs from "fs/promises";
-import path from "path";
-const rm = async (pathToSourceFile, currdir) => {
-  if (pathToSourceFile === "") {
-    console.log("Invalid input");
-  }
+import {
+  failedOperationMess,
+  invalidInputMess,
+  getCurrentPathMess,
+} from "./utils/messages.js";
+import getAbsolutePath from "./utils/getAbolutePath.js";
 
-  const absPathToSourceFile = path.resolve(currdir, pathToSourceFile);
-
+const rm = async (pathToFile, currdir) => {
+  const pathToSourceFile = getAbsolutePath(pathToFile, currdir);
   try {
-    await fs.rm(absPathToSourceFile);
+    await fs.rm(pathToSourceFile);
+    console.log(`The file ${pathToFile} has been successfully deleted!`);
+    getCurrentPathMess();
     return true;
-  } catch {
-    console.log("Operation failed");
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      invalidInputMess();
+      getCurrentPathMess();
+    } else {
+      failedOperationMess();
+      getCurrentPathMess();
+    }
     return false;
   }
 };

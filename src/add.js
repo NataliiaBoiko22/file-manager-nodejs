@@ -1,15 +1,32 @@
-import { resolve } from "path";
 import fs from "fs/promises";
-const add = async (currdir, newFileName) => {
-  if (newFileName === "") {
-    console.log("Invalid input");
-  }
-  try {
-    const filePath = resolve(currdir, newFileName);
-    await fs.writeFile(filePath, "");
-    console.log(`file ${newFileName} added`);
-  } catch {
-    console.log("Operation failed");
+import getAbsolutePath from "./utils/getAbolutePath.js";
+import {
+  failedOperationMess,
+  invalidInputMess,
+  getCurrentPathMess,
+} from "./utils/messages.js";
+const add = async (newFileName, currdir) => {
+  const pathToNewFile = getAbsolutePath(newFileName, currdir);
+
+  try
+  {
+    const fd = await fs.open(pathToNewFile, "wx");
+    const writeStream = fd.createWriteStream();
+    writeStream.close();
+    console.log(`The file ${newFileName} was succesfully created`);
+    getCurrentPathMess();
+  } catch (err)
+  {
+    if (err.code === "ENOENT")
+    {
+      invalidInputMess();
+      getCurrentPathMess();
+    } else
+    {
+      failedOperationMess();
+      getCurrentPathMess();
+    }
+    return false;
   }
 };
 

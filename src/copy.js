@@ -1,25 +1,64 @@
 import fs from "fs";
 import path from "path";
-
-const cp = async (pathToSourceFile, pathToNewDir, currdir) => {
-  if (pathToSourceFile === "") {
-    console.log("Invalid input");
+import {
+  failedOperationMess,
+  invalidInputMess,
+  getCurrentPathMess,
+} from "./utils/messages.js";
+import getAbsolutePath from "./utils/getAbolutePath.js";
+const cp = async (pathToFile, pathToNewDir, currdir) => {
+  const pathToSourceFile = getAbsolutePath(pathToFile, currdir);
+  const newDirPath = getAbsolutePath(pathToNewDir, currdir);
+  if (
+    !pathToSourceFile ||
+    !newDirPath ||
+    pathToFile.trim() === "" ||
+    pathToNewDir.trim() === ""
+  ) {
+    invalidInputMess();
+    getCurrentPathMess();
+    return;
   }
+
+  try {
+    await fs.promises.access(pathToSourceFile, fs.constants.F_OK);
+    await fs.promises.access(newDirPath, fs.constants.F_OK);
+  } catch (error) {
+    invalidInputMess();
+    getCurrentPathMess();
+    return;
+  }
+
   try {
     const nameOfSourceFile = path.parse(pathToSourceFile).base;
-    const absPathToSourceFile = path.resolve(currdir, pathToSourceFile);
-    const absPathToDestinationFile = path.resolve(
-      currdir,
-      pathToNewDir,
-      nameOfSourceFile
-    );
-    console.log(absPathToDestinationFile);
-    const readStream = fs.createReadStream(absPathToSourceFile);
-    const writableStream = fs.createWriteStream(absPathToDestinationFile);
+    const absPathToDestinationFile = path.resolve(newDirPath, nameOfSourceFile);
+    const fileExists = await new Promise((resolve) => {
+      fs.access(absPathToDestinationFile, fs.constants.F_OK, (err) => {
+        resolve(!err);
+      });
+    });
+
+    if (fileExists) {
+      console.log(
+        `Such a file already exists in the ${pathToNewDir} directory. Enter a valid path.`
+      );
+      return;
+    }
+
+    const readStream = fs.createReadStream(pathToSourceFile);
+    const writableStream = fs.createWriteStream(absPathToDestinationFile, {
+      flags: "wx",
+    });
 
     readStream.pipe(writableStream);
+    console.log(
+      `The file ${nameOfSourceFile} has been successfully copied to ${pathToNewDir}`
+    );
+    getCurrentPathMess();
   } catch {
-    console.log("Operation Failed");
+    failedOperationMess();
+    getCurrentPathMess();
   }
 };
+
 export default cp;

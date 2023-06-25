@@ -3,6 +3,12 @@ import { resolve } from "path";
 import { createReadStream } from "fs";
 import { pipeline } from "stream/promises";
 import { Writable } from "stream";
+import {
+  failedOperationMess,
+  invalidInputMess,
+  getCurrentPathMess,
+} from "./utils/messages.js";
+import getAbsolutePath from "./utils/getAbolutePath.js";
 
 const createSendStream = () => {
   return new Writable({
@@ -12,22 +18,25 @@ const createSendStream = () => {
     },
   });
 };
-const cat = async (currdir, fileName) => {
-  if (fileName === "") {
-    console.log("Invalid input");
-    return false;
-  }
+const cat = async (pathToFile, currdir) => {
+  const filePath = getAbsolutePath(pathToFile, currdir);
+
   try {
     await pipeline(
-      createReadStream(resolve(currdir, fileName)),
+      createReadStream(resolve(currdir, filePath)),
       createSendStream()
     );
-
+    getCurrentPathMess();
     return path;
   } catch (err) {
-    console.log("Operation failed");
+    if (err.code === "ENOENT") {
+      invalidInputMess();
+      getCurrentPathMess();
+    } else {
+      failedOperationMess();
+      getCurrentPathMess();
+    }
     return false;
   }
 };
-
 export default cat;

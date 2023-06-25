@@ -1,36 +1,31 @@
-import path from "path";
 import fs from "fs";
-export const getAbsPath = (newPathTo, currentdir) => {
-  let absolutePath;
-  if (!path.isAbsolute(newPathTo)) {
-    if (newPathTo.includes("./") || newPathTo.includes("../")) {
-      absolutePath = path.resolve(currentdir, newPathTo);
-    } else {
-      absolutePath = path.join(currentdir, newPathTo);
-    }
-  } else {
-    absolutePath = newPathTo;
-  }
+import getAbsolutePath from "./utils/getAbolutePath.js";
+import {
+  failedOperationMess,
+  invalidInputMess,
+} from "./utils/messages.js";
 
-  return absolutePath;
-};
 const cd = async (newPath, currdir) => {
-  // process.chdir(currdir);
-  let absolutePath = getAbsPath(newPath, currdir);
+  try {
+    let absolutePath = getAbsolutePath(newPath, currdir);
 
-  absolutePath = await fs.promises
-    .stat(absolutePath)
-    .then(async (stat) => {
-      if (stat.isDirectory()) {
-        return absolutePath;
-      }
-    })
-    .catch((err) => {
-      console.log("Operation failed");
+    const stat = await fs.promises.stat(absolutePath);
+
+    if (stat.isDirectory()) {
+    
+      return absolutePath;
+    } else {
+      invalidInputMess();
       return currdir;
-    });
-
-  return absolutePath;
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      invalidInputMess();
+    } else {
+      failedOperationMess();
+    }
+    return currdir;
+  }
 };
 
 export default cd;
