@@ -1,13 +1,12 @@
 import os from "os";
 import readline from "readline";
 import { EOL } from "os";
-
-import { fileURLToPath } from "url";
 import { stdin, stdout, exit } from "process";
 import {
   getCurrentPathMess,
   getWelcomeMess,
   getGoodbyeMess,
+  invalidInputMess,
 } from "./src/utils/messages.js";
 import up from "./src/up.js";
 import cd from "./src/cd.js";
@@ -22,16 +21,10 @@ import oS from "./src/os.js";
 import hash from "./src/hash.js";
 import compress from "./src/compress.js";
 import decompress from "./src/decompress.js";
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const fileManager = async () => {
   const homedir = os.homedir();
   let currdir = process.cwd();
-  // process.chdir(homedir);
-  // console.log(homedir);
-  // console.log(currdir);
-
   const userName = process.argv
     .slice(2)
     .filter((s) => s.includes("--username"))[0]
@@ -77,48 +70,39 @@ const fileManager = async () => {
         break;
       case line === "ls":
         await ls(currdir);
-        // rl.prompt();
         break;
       case command === "cat":
         await cat(source, currdir);
-        // rl.prompt();
         break;
       case command === "add":
         await add(source, currdir);
-        // rl.prompt();
         break;
       case command === "rn":
         await rn(source, destination, currdir);
-        // rl.prompt();
         break;
       case command === "cp":
         await cp(source, destination, currdir);
-        // rl.prompt();
         break;
       case command === "rm":
         await rm(source, currdir);
-        // rl.prompt();
         break;
       case command === "mv":
         await mv(source, destination, currdir);
-        // rl.prompt();
         break;
       case line.includes("os --"):
         await oS(source);
-        // rl.prompt();
         break;
       case command === "hash":
         await hash(source, currdir);
-        // rl.prompt();
         break;
       case command === "compress":
         await compress(source, destination, currdir);
-        // rl.prompt();
         break;
       case command === "decompress":
         await decompress(source, destination, currdir);
-        // rl.prompt();
         break;
+      default:
+        invalidInputMess();
     }
   });
 };
