@@ -19,7 +19,8 @@ import rm from "./src/remove.js";
 import mv from "./src/move.js";
 import oS from "./src/os.js";
 import hash from "./src/hash.js";
-
+import compress from "./src/compress.js";
+import decompress from "./src/decompress.js";
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
@@ -58,6 +59,7 @@ const fileManager = async () => {
   });
 
   rl.on("line", async (line) => {
+    let command = line.split(" ")[0];
     let source = line.split(" ")[1];
     let destination = line.split(" ")[2];
 
@@ -68,7 +70,7 @@ const fileManager = async () => {
         rl.prompt();
         console.log(currdir);
         break;
-      case line.includes("cd "):
+      case command === "cd":
         let newPath = line.split(" ")[1];
         currdir = await cd(newPath, currdir);
         rl.setPrompt(`You are currently in ${currdir}\n`);
@@ -79,36 +81,44 @@ const fileManager = async () => {
         await ls(currdir);
         rl.prompt();
         break;
-      case line.includes("cat "):
+      case command === "cat":
         await cat(currdir, source);
         rl.prompt();
         break;
-      case line.includes("add "):
+      case command === "add":
         await add(currdir, source);
         rl.prompt();
         break;
-      case line.includes("rn "):
+      case command === "rn":
         await rn(source, currdir, destination);
         rl.prompt();
         break;
-      case line.includes("cp "):
+      case command === "cp":
         await cp(source, destination, currdir);
         rl.prompt();
         break;
-      case line.includes("rm "):
+      case command === "rm":
         await rm(source, currdir);
         rl.prompt();
         break;
-      case line.includes("mv "):
+      case command === "mv":
         await mv(source, destination, currdir);
         rl.prompt();
         break;
-      case line.includes("os --"):
+      case command === "os --":
         await oS(source);
         rl.prompt();
         break;
-      case line.includes("hash "):
+      case command === "hash ":
         await hash(source);
+        rl.prompt();
+        break;
+      case command === "compress":
+        await compress(source, destination, currdir);
+        rl.prompt();
+        break;
+      case command === "decompress":
+        await decompress(source, destination, currdir);
         rl.prompt();
         break;
     }

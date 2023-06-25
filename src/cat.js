@@ -14,7 +14,7 @@ const createSendStream = () => {
 };
 const cat = async (currdir, fileName) => {
   if (fileName === "") {
-    console.log("Invalid input -no file");
+    console.log("Invalid input");
     return false;
   }
   try {
