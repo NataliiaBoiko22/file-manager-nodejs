@@ -21,6 +21,7 @@ import oS from "./src/os.js";
 import hash from "./src/hash.js";
 import compress from "./src/compress.js";
 import decompress from "./src/decompress.js";
+import resolvePath from "./src/parseline.js";
 
 const fileManager = async () => {
   const homedir = os.homedir();
@@ -52,53 +53,55 @@ const fileManager = async () => {
     }
   });
 
-  rl.on("line", async (line) => {
-    let command = line.split(" ")[0];
-    let source = line.split(" ")[1];
-    let destination = line.split(" ")[2];
+  rl.on("line", async (enter) => {
+    let line = resolvePath(enter);
+    let command = line[0];
+    let source = line[1];
+    let destination = line[2];
+    let lineLength = line.length;
 
     switch (true) {
-      case line === "up":
+      case command === "up":
         currdir = up(homedir, currdir);
         rl.setPrompt(`You are currently in ${currdir}${EOL}`);
         rl.prompt();
         break;
-      case command === "cd":
+      case command === "cd" && lineLength === 2:
         currdir = await cd(source, currdir);
         rl.setPrompt(`You are currently in ${currdir}${EOL}`);
         rl.prompt();
         break;
-      case line === "ls":
+      case command === "ls":
         await ls(currdir);
         break;
-      case command === "cat":
+      case command === "cat" && lineLength === 2:
         await cat(source, currdir);
         break;
-      case command === "add":
+      case command === "add" && lineLength === 2:
         await add(source, currdir);
         break;
-      case command === "rn":
+      case command === "rn" && lineLength === 3:
         await rn(source, destination, currdir);
         break;
-      case command === "cp":
+      case command === "cp" && lineLength === 3:
         await cp(source, destination, currdir);
         break;
-      case command === "rm":
+      case command === "rm" && lineLength === 2:
         await rm(source, currdir);
         break;
-      case command === "mv":
+      case command === "mv" && lineLength === 3:
         await mv(source, destination, currdir);
         break;
-      case line.includes("os --"):
+      case command === "os" && lineLength === 2:
         await oS(source);
         break;
-      case command === "hash":
+      case command === "hash" && lineLength === 2:
         await hash(source, currdir);
         break;
-      case command === "compress":
+      case command === "compress" && lineLength === 3:
         await compress(source, destination, currdir);
         break;
-      case command === "decompress":
+      case command === "decompress" && lineLength === 3:
         await decompress(source, destination, currdir);
         break;
       default:

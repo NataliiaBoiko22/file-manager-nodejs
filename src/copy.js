@@ -8,7 +8,7 @@ import {
 import getAbsolutePath from "./utils/getAbolutePath.js";
 const cp = async (pathToFile, pathToNewDir, currdir) => {
   const pathToSourceFile = getAbsolutePath(pathToFile, currdir);
-  const newDirPath = getAbsolutePath(pathToNewDir, currdir);
+  const newDirPath = getAbsolutePath(path.normalize(pathToNewDir), currdir);
   if (
     !pathToSourceFile ||
     !newDirPath ||
