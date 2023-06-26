@@ -5,7 +5,6 @@ import {
   invalidInputMess,
   getCurrentPathMess,
 } from "./utils/messages.js";
-// import { setUserCurrentDir } from "./utils/helpers.js";
 const cd = async (newPath, currdir) => {
   try {
     let absolutePath = getAbsolutePath(newPath, currdir);
@@ -15,8 +14,6 @@ const cd = async (newPath, currdir) => {
     if (stat.isDirectory()) {
       process.chdir(absolutePath);
       getCurrentPathMess();
-      // setUserCurrentDir(absolutePath);
-
       return absolutePath;
     } else {
       invalidInputMess();

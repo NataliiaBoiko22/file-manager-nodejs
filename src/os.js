@@ -1,9 +1,5 @@
 import { arch, cpus, EOL, homedir, userInfo } from "os";
-import {
-  failedOperationMess,
-  invalidInputMess,
-  getCurrentPathMess,
-} from "./utils/messages.js";
+import { getCurrentPathMess } from "./utils/messages.js";
 const oS = async function (command) {
   switch (true) {
     case command === "--EOL":

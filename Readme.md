@@ -56,9 +56,8 @@
 
 `decompress path_to_file path_to_destination` Decompress file (using Brotli algorithm).
 
-<details>
-  
 ## Example of commands for testing:
+
 npm run start -- --username=your_username
 
 `cd C:\Users\yourMainFolder`

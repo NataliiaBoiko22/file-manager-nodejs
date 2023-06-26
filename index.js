@@ -1,6 +1,5 @@
 import os from "os";
 import readline from "readline";
-import { EOL } from "os";
 import { stdin, stdout, exit } from "process";
 import {
   getCurrentPathMess,
@@ -65,13 +64,9 @@ const fileManager = async () => {
     switch (true) {
       case command === "up":
         currdir = up(homedir, currdir);
-        // rl.setPrompt(`You are currently in ${currdir}${EOL}`);
-        // rl.prompt();
         break;
       case command === "cd" && lineLength === 2:
         currdir = await cd(source, currdir);
-        // rl.setPrompt(`You are currently in ${currdir}${EOL}`);
-        // rl.prompt();
         break;
       case command === "ls":
         await ls(currdir);
