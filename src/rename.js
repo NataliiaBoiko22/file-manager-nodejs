@@ -18,7 +18,6 @@ const rn = async (pathToFile, updateFileName, currdir) => {
     updateFileName.trim() === ""
   ) {
     invalidInputMess();
-    getCurrentPathMess();
     return;
   }
 
@@ -26,7 +25,6 @@ const rn = async (pathToFile, updateFileName, currdir) => {
     await fs.promises.access(pathToSourceFile, fs.constants.F_OK);
   } catch (error) {
     invalidInputMess();
-    getCurrentPathMess();
     return;
   }
   try {
@@ -38,7 +36,6 @@ const rn = async (pathToFile, updateFileName, currdir) => {
     getCurrentPathMess();
   } catch (err) {
     failedOperationMess();
-    getCurrentPathMess();
   }
 };
 

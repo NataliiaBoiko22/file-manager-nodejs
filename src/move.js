@@ -9,6 +9,7 @@ import getAbsolutePath from "./utils/getAbolutePath.js";
 const mv = async (pathToFile, pathToNewDir, currdir) => {
   const pathToSourceFile = getAbsolutePath(pathToFile, currdir);
   const pathToNewDirrect = getAbsolutePath(pathToNewDir, currdir);
+
   if (
     !pathToSourceFile ||
     !pathToNewDirrect ||
@@ -61,10 +62,8 @@ const mv = async (pathToFile, pathToNewDir, currdir) => {
   } catch (err) {
     if (err.code === "ENOENT") {
       invalidInputMess();
-      getCurrentPathMess();
     } else {
       failedOperationMess();
-      getCurrentPathMess();
     }
     return false;
   }

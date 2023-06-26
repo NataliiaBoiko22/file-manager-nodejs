@@ -20,7 +20,6 @@ const decompress = async (pathToFile, pathToNewDir, currdir) => {
     pathToNewDir.trim() === ""
   ) {
     invalidInputMess();
-    getCurrentPathMess();
     return;
   }
 
@@ -29,7 +28,6 @@ const decompress = async (pathToFile, pathToNewDir, currdir) => {
     await fs.promises.access(pathToNewDirrect, fs.constants.F_OK);
   } catch (error) {
     invalidInputMess();
-    getCurrentPathMess();
 
     return;
   }
@@ -45,7 +43,6 @@ const decompress = async (pathToFile, pathToNewDir, currdir) => {
     getCurrentPathMess();
   } catch (error) {
     failedOperationMess();
-    getCurrentPathMess();
 
     return;
   }

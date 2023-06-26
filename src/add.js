@@ -8,23 +8,17 @@ import {
 const add = async (newFileName, currdir) => {
   const pathToNewFile = getAbsolutePath(newFileName, currdir);
 
-  try
-  {
+  try {
     const fd = await fs.open(pathToNewFile, "wx");
     const writeStream = fd.createWriteStream();
     writeStream.close();
     console.log(`The file ${newFileName} was succesfully created`);
     getCurrentPathMess();
-  } catch (err)
-  {
-    if (err.code === "ENOENT")
-    {
+  } catch (err) {
+    if (err.code === "ENOENT") {
       invalidInputMess();
-      getCurrentPathMess();
-    } else
-    {
+    } else {
       failedOperationMess();
-      getCurrentPathMess();
     }
     return false;
   }

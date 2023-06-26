@@ -25,11 +25,13 @@ import resolvePath from "./src/parseline.js";
 
 const fileManager = async () => {
   const homedir = os.homedir();
+  process.chdir(homedir);
   let currdir = process.cwd();
-  const userName = process.argv
-    .slice(2)
-    .filter((s) => s.includes("--username"))[0]
-    .split("=")[1];
+  const userName =
+    process.argv
+      .slice(2)
+      .filter((s) => s.includes("--username"))[0]
+      .split("=")[1] || "Anonymous";
 
   getWelcomeMess(userName);
 
@@ -63,13 +65,13 @@ const fileManager = async () => {
     switch (true) {
       case command === "up":
         currdir = up(homedir, currdir);
-        rl.setPrompt(`You are currently in ${currdir}${EOL}`);
-        rl.prompt();
+        // rl.setPrompt(`You are currently in ${currdir}${EOL}`);
+        // rl.prompt();
         break;
       case command === "cd" && lineLength === 2:
         currdir = await cd(source, currdir);
-        rl.setPrompt(`You are currently in ${currdir}${EOL}`);
-        rl.prompt();
+        // rl.setPrompt(`You are currently in ${currdir}${EOL}`);
+        // rl.prompt();
         break;
       case command === "ls":
         await ls(currdir);

@@ -16,7 +16,6 @@ const cp = async (pathToFile, pathToNewDir, currdir) => {
     pathToNewDir.trim() === ""
   ) {
     invalidInputMess();
-    getCurrentPathMess();
     return;
   }
 
@@ -25,7 +24,6 @@ const cp = async (pathToFile, pathToNewDir, currdir) => {
     await fs.promises.access(newDirPath, fs.constants.F_OK);
   } catch (error) {
     invalidInputMess();
-    getCurrentPathMess();
     return;
   }
 
@@ -42,6 +40,8 @@ const cp = async (pathToFile, pathToNewDir, currdir) => {
       console.log(
         `Such a file already exists in the ${pathToNewDir} directory. Enter a valid path.`
       );
+      getCurrentPathMess();
+
       return;
     }
 
@@ -57,7 +57,6 @@ const cp = async (pathToFile, pathToNewDir, currdir) => {
     getCurrentPathMess();
   } catch {
     failedOperationMess();
-    getCurrentPathMess();
   }
 };
 

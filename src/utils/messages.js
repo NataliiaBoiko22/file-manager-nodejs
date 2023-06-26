@@ -14,7 +14,9 @@ export function getGoodbyeMess(userName) {
 
 export function failedOperationMess() {
   console.log(`${EOL}Operation failed${EOL}`);
+  console.log(`You are currently in ${process.cwd()}${EOL}`);
 }
 export function invalidInputMess() {
   console.log(`${EOL}Invalid input${EOL}`);
+  console.log(`You are currently in ${process.cwd()}${EOL}`);
 }

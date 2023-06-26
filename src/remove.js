@@ -16,10 +16,8 @@ const rm = async (pathToFile, currdir) => {
   } catch (err) {
     if (err.code === "ENOENT") {
       invalidInputMess();
-      getCurrentPathMess();
     } else {
       failedOperationMess();
-      getCurrentPathMess();
     }
     return false;
   }
